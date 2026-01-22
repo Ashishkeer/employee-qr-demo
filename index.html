@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee QR Code Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 320px;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 16px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 6px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1e4ed8;
+    }
+    #qrContainer {
+      margin-top: 20px;
+    }
+    #downloadBtn {
+      background: #16a34a;
+      display: none;
+    }
+    #downloadBtn:hover {
+      background: #15803d;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Enter Employee Code</h2>
+    <input type="text" id="empCode" placeholder="e.g. EMP123" />
+    <button onclick="generateQR()">Generate QR Code</button><div id="qrContainer"></div>
+<button id="downloadBtn" onclick="downloadQR()">Download QR Code</button>
+
+  </div> <script>
+    let currentQRUrl = "";
+
+    function generateQR() {
+      const empCode = document.getElementById("empCode").value.trim();
+      if (!empCode) {
+        alert("Please enter employee code");
+        return;
+      }
+
+      // Free QR API (no key required)
+      currentQRUrl = `https://qrickit.com/api/qr.php?d=${encodeURIComponent(empCode)}&qrsize=300`;
+
+      document.getElementById("qrContainer").innerHTML = `
+        <img id="qrImage" src="${currentQRUrl}" alt="QR Code" />
+      `;
+
+      document.getElementById("downloadBtn").style.display = "block";
+    }
+
+    function downloadQR() {
+      const link = document.createElement("a");
+      link.href = currentQRUrl;
+      link.download = "employee_qr.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script></body>
+</html>
